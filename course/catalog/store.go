@@ -2,6 +2,10 @@ package catalog
 
 import (
 	"context"
+	"database/sql"
+	"errors"
+	"fmt"
+	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -87,9 +91,9 @@ func (s *Store) FindCourseByID(ctx context.Context, id string) (*Course, error) 
 	if err := getConcert.QueryRowContext(ctx).Scan(
 		&c.ID, &c.Name, &c.Slug, &c.Description, &c.Status, &c.PublishedAt,
 	); err != nil {
-		// if errors.Is(err, sql.ErrNoRows) {
-		// 	return nil, db.ErrResourceNotFound{Message: fmt.Sprintf("course with id %s not found", id)}
-		// }
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, db.ErrResourceNotFound{Message: fmt.Sprintf("course with id %s not found", id)}
+		}
 		return nil, err
 	}
 
