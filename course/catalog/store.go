@@ -94,6 +94,9 @@ func (s *Store) FindCourseByID(ctx context.Context, id string) (*Course, error) 
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, db.ErrResourceNotFound{Message: fmt.Sprintf("course with id %s not found", id)}
 		}
+		if strings.Contains(err.Error(), "invalid input syntax") {
+			return nil, db.ErrInvalidArgument{Message: fmt.Sprintf("course with id %s is not valid uuid", id)}
+		}
 		return nil, err
 	}
 
@@ -253,7 +256,7 @@ func (c *Store) UpdateBatchAvailableSeats(ctx context.Context, b *Batch, opts ..
 	return nil
 }
 
-func (c *Store) FindAllBatchesByCourseID(ctx context.Context, courseID string, opts ...ListOption) ([]Batch, string, error) {	
+func (c *Store) FindAllBatchesByCourseID(ctx context.Context, courseID string, opts ...ListOption) ([]Batch, string, error) {
 	options := &ListOptions{
 		Limit: 10,
 	}
