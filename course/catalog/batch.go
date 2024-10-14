@@ -3,7 +3,6 @@ package catalog
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -58,12 +57,6 @@ func (b Batch) ApiV1() *v1.Batch {
 		EndDate:        endDate,
 	}
 }
-
-var (
-	ErrNotEnoughSeats           = errors.New("no seat available")
-	ErrClassSoldOut             = errors.New("class is sold out")
-	ErrClassNotAvailableForSale = errors.New("class is not available for sale")
-)
 
 func (b *Batch) Reserve(ctx context.Context) error {
 	if err := b.Available(ctx); err != nil {
