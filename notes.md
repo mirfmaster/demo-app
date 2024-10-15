@@ -67,3 +67,22 @@ Represents a single numerical value that can go up or down such as CPU Usage
 - Histogram
 Represents the distribution of observed values into configurable buckets
   - Analyzing response times, API latencies
+
+## Promotheus Exporter / Target
+
+### How it works:
+- Metrics collection
+- Exposition: It exposes these metrics in a specific format that Prometheus can understand
+- Scrapping: periodically scrapes these exposed metrics endpoints provided by exporter
+
+### How it scrappe
+- Instrumenting the application
+This only works if the app has endpoint `/metrics` like Grafana does
+
+- External Exporter
+E.G: PostgreSQL Exporter
+Application (PostgreSQL) <- PostgreSQL Exporter <- Prometheus Server
+
+## Node Exporter
+https://github.com/prometheus/node_exporter
+Prometheus exporter for hardware and OS metrics

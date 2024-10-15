@@ -36,6 +36,8 @@ services:
       options:
         tag: postgres
         fluentd-sub-second-precision: "true"
+    depends_on:
+      - fluentbit
 
   redis:
     image: bitnami/redis:7.0
@@ -68,6 +70,17 @@ services:
       - "--storage.tsdb.retention.size=10GB"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - "--path.rootfs=/host"
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+    volumes:
+      - "/:/host:ro,rslave"
 
 volumes:
   grafana_data:
