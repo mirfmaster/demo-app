@@ -86,3 +86,35 @@ Application (PostgreSQL) <- PostgreSQL Exporter <- Prometheus Server
 ## Node Exporter
 https://github.com/prometheus/node_exporter
 Prometheus exporter for hardware and OS metrics
+
+
+# Overall Flow
+
+## Monitoring webserver
+- Main App
+  Main app must have efficient logging system
+
+- Fluentbit
+  Log Collector Agent / forwarder
+
+- Loki
+  Loki is log aggregator
+
+- Grafana
+  Grafana can visualize better / show logs directly that consumed from loki
+
+## Monitoring application using Prometheus
+- VM / Cloud Monitoring using
+https://github.com/prometheus/node_exporter
+Prometheus exporter for hardware and OS metrics
+
+- App like postgres, VM Resources, etc
+
+- Use prometheus exporter
+  Data will shown at /metrics
+
+- Use grafana to visualize
+  Or use Grafana Built in Community Dashboard at https://grafana.com/grafana/dashboards/
+
+## Instrumenting Go Application using Prometheus SDK
+https://prometheus.io/docs/guides/go-application/
